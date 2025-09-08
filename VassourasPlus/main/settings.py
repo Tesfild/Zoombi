@@ -1,6 +1,13 @@
 from pathlib import Path
+from . info import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+EMAIL_USE_TLS = EMAIL_USE_TLS
+EMAIL_HOST = EMAIL_HOST
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_PORT = EMAIL_PORT
 
 SECRET_KEY = 'django-insecure-3qcu&yy!b8thrndhr!ox9znada+2@n#n+-ibopa$g%#k+cdiip'
 
