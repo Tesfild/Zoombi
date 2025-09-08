@@ -8,10 +8,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Liguei os usuários para que a autenticação os reconheça
+# Liguei os usuários para que a autenticação os reconheça, ligação com o rest, jwt
 INSTALLED_APPS = [
     'usuarios',
     'rest_framework',
+    'rest_framework_simplejwt',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -88,3 +89,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Sobreescrevendo o django.auth para autenticar o email
 AUTH_USER_MODEL = 'usuarios.CustomUser'
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        
+         'rest_framework_simplejwt.authentication.CookieJWTAuthentication',
+    )
+}
