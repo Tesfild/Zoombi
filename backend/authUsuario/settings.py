@@ -1,15 +1,8 @@
 from pathlib import Path
-from . info import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-EMAIL_USE_TLS = EMAIL_USE_TLS
-EMAIL_HOST = EMAIL_HOST
-EMAIL_HOST_USER = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
-EMAIL_PORT = EMAIL_PORT
-
-SECRET_KEY = 'django-insecure-3qcu&yy!b8thrndhr!ox9znada+2@n#n+-ibopa$g%#k+cdiip'
+SECRET_KEY = 'django-insecure-2r2csjmwc5434nsp%34!8@#on*sl)b)f+58zi@j^drh5vhqbid'
 
 DEBUG = True
 
@@ -35,12 +28,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'main.urls'
+ROOT_URLCONF = 'authUsuario.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["templates"],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -52,7 +45,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'main.wsgi.application'
+WSGI_APPLICATION = 'authUsuario.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -60,6 +53,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -76,6 +70,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -83,6 +78,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
 
 STATIC_URL = 'static/'
 
