@@ -8,8 +8,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+# Liguei os usuários para que a autenticação os reconheça
 INSTALLED_APPS = [
+    'usuarios',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,3 +85,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Sobreescrevendo o django.auth para autenticar o email
+AUTH_USER_MODEL = 'usuarios.CustomUser'
