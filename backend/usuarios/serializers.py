@@ -17,7 +17,7 @@ class RegisterUserSerializer(ModelSerializer):
 
     # Método para validar os dados
     def create(self, validated_data):
-        user = CustomUser.objects.create(**validated_data)
+        user = CustomUser.objects.create_user(**validated_data)
         return user
     
 # Normalizando os dados para que fiquem no formato correto
@@ -26,7 +26,7 @@ class LoginUserSerializer(Serializer):
     password = serializers.CharField(write_only=True)
 
     # Autenticando os dados dos usuários armazenados no banco de dados
-    def validade(self, data):
+    def validate(self, data):
         user = authenticate(**data)
         if user and user.is_active:
             return user

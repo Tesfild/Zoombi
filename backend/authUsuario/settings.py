@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,11 +9,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Liguei os usuários para que a autenticação os reconheça, ligação com o rest, jwt
+# Liguei os usuários para que a autenticação os reconheça, ligação com o rest, jwt, blacklist
 INSTALLED_APPS = [
     'usuarios',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -93,7 +95,15 @@ AUTH_USER_MODEL = 'usuarios.CustomUser'
 REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        
-         'rest_framework_simplejwt.authentication.CookieJWTAuthentication',
+
+         'usuarios.authentication.CookieJWTAuthentication',
     )
+}
+
+# Configurações dos tokens
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
 }
