@@ -9,8 +9,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Liguei os usuários para que a autenticação os reconheça, ligação com o rest, jwt, blacklist
+# Liguei os usuários para que a autenticação os reconheça, ligação com o rest, jwt, blacklist, corsheaders
 INSTALLED_APPS = [
+    'corsheaders',
     'usuarios',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -23,7 +24,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+# Adicionando os middlewares do django corsheaders
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -107,3 +112,6 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
