@@ -11,7 +11,7 @@ export default function RegisterPage() {
     return (
         <div className="min-h-screen bg-gray-100 items-center flex flex-col justify-center">
 
-            <form>
+            <form className="bg-gray--600 p-8 flex flex-col ga">
 
                 <label>Nome de usuário</label>
                 <input type="text" value={userName} required onChange={(e)=>{setUserName(e.target.value)}}/>
