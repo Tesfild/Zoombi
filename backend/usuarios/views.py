@@ -38,13 +38,13 @@ class LoginView(APIView):
             response.set_cookie(key='access_token',
                                 value=access_token,
                                 httponly=True,
-                                secure=True,
+                                secure=False,
                                 samesite='None')
-            
+            # Botando false na segurança apenas para teste em desenvolvimento, não em produção
             response.set_cookie(key='refresh_token', 
                                 value=str(refresh),
                                 httponly=True,
-                                secure=True,
+                                secure=False,
                                 samesite='None')
             return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -79,7 +79,8 @@ class CookieTokenRefreshView(TokenRefreshView):
             response.set_cookie(key='access_token',
                                 value=access_token,
                                 httponly=True,
-                                secure=True,
+                                # ativar a segurança em produção
+                                secure=False,
                                 samesite='Strict')
             return response
         except InvalidToken:
