@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework.permissions import AllowAny
 
 # Criando o módulo para apenas usuários autenticados entrarem
 class UserInfoView(RetrieveUpdateAPIView):
@@ -20,6 +21,7 @@ class UserInfoView(RetrieveUpdateAPIView):
 # Criando ENDPOINTS de usuários
 class UserRegistrationView(CreateAPIView):
     serializer_class = RegisterUserSerializer
+    permission_classes = [AllowAny]
 
 # Criando EndPoints para o login, recebendo os dados do cadastro
 class LoginView(APIView):
@@ -38,13 +40,13 @@ class LoginView(APIView):
             response.set_cookie(key='access_token',
                                 value=access_token,
                                 httponly=True,
-                                secure=False,
+                                secure=True,
                                 samesite='None')
             # Botando false na segurança apenas para teste em desenvolvimento, não em produção
             response.set_cookie(key='refresh_token', 
                                 value=str(refresh),
                                 httponly=True,
-                                secure=False,
+                                secure=True,
                                 samesite='None')
             return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -80,8 +82,8 @@ class CookieTokenRefreshView(TokenRefreshView):
                                 value=access_token,
                                 httponly=True,
                                 # ativar a segurança em produção
-                                secure=False,
-                                samesite='Strict')
+                                secure=True,
+                                samesite='None')
             return response
         except InvalidToken:
             return response({'error':'Invalid token.'}, status=status.HTTP_401_UNAUTHORIZED)
