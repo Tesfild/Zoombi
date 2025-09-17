@@ -1,5 +1,6 @@
 "use client"
 import Head from "next/head";
+// retirando refreshToken
 import {logoutUser, getUserInfo, refreshToken} from "../../utils/auth";
 import {useState, useEffect} from "react";
  
