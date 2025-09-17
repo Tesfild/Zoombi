@@ -68,7 +68,7 @@ class LogoutView(APIView):
         return response
 
 class CookieTokenRefreshView(TokenRefreshView):
-    def post(Self, request):
+    def post(self, request):
         refresh_token = request.COOKIES.get("refresh_token")
 
         if not refresh_token:
@@ -86,4 +86,4 @@ class CookieTokenRefreshView(TokenRefreshView):
                                 samesite='None')
             return response
         except InvalidToken:
-            return response({'error':'Invalid token.'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error':'Invalid token.'}, status=status.HTTP_401_UNAUTHORIZED)
