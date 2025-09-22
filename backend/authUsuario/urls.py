@@ -10,5 +10,5 @@ urlpatterns = [
     path('api/usuarios/', include('usuarios.urls')),
 ] 
 
-if settings.DEBUG:  # só serve arquivos de mídia em modo debug
+if settings.DEBUG:  
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
