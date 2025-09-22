@@ -145,11 +145,14 @@ export default function Home() {
             {user ? (
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
                 <button className="w-full sm:w-auto px-8 py-4 bg-[#eca390] hover:bg-[#d78c86] text-[#20053c] font-semibold rounded-2xl transition-all duration-200 transform hover:scale-[1.05] shadow-lg text-lg">
+                  
                   EXPLORAR AGORA
                 </button>
+                <Link href="/perfil">
                 <button className="w-full sm:w-auto px-8 py-4 border-2 border-[#eca390] text-[#eca390] hover:bg-[#eca390] hover:text-[#20053c] font-semibold rounded-2xl transition-all duration-200 transform hover:scale-[1.05] text-lg">
                   MEU PERFIL
                 </button>
+                </Link>
               </div>
             ) : (
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
