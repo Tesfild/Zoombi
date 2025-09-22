@@ -134,7 +134,7 @@ export default function Home() {
                   </span>
                 </h1>
                 <p className="text-xl md:text-2xl text-white/80 mb-12 leading-relaxed">
-                  O app que tira você do modo zumbi acadêmico!
+                  A plataforma que tira você do modo zumbi acadêmico!
                   <br className="hidden md:block" />
                   Organize sua vida estudantil antes que ela vire um apocalipse de trabalhos atrasados.
                 </p>
