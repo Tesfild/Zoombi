@@ -17,7 +17,7 @@ export default function LoginPage() {
         })
             .then(() => {
                 // Se conseguiu pegar o perfil já está autenticado
-                router.replace("/profile")
+                router.replace("/perfil")
             })
             .catch(() => {
                 // Se deu erro continua na tela de login
@@ -30,7 +30,7 @@ export default function LoginPage() {
         try {
             await loginUser(email, password)
             alert("Login realizado com sucesso!")
-            router.push("/profile") // vai direto para o perfil depois do login
+            router.push("/perfil") // vai direto para o perfil depois do login
         } catch (e) {
             alert("Login não pode ser realizado.")
         }

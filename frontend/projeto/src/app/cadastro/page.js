@@ -17,7 +17,7 @@ export default function RegisterPage() {
             await registerUser(email, password, userName)
             alert("Usuário registrado!")
         } catch (e) {
-            alert("Usuário não pode ser registrado")
+            alert("Usuário não pode ser registrado.")
         }
     }
 
