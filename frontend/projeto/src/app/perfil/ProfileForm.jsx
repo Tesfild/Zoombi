@@ -8,14 +8,10 @@ function LoadingComponent() {
     return (
         <div className="min-h-screen bg-[#20053c] relative overflow-hidden flex items-center justify-center">
             <div className="absolute top-0 right-0 w-full overflow-hidden leading-none z-0">
-                <svg className="relative block w-full h-32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200" preserveAspectRatio="none">
-                    <path fill="#eca390" fillOpacity="1" d="M1440,60 C1300,40 1200,30 1000,35 C800,40 600,50 400,45 C200,40 100,30 0,25 L0,0 L1440,0 Z" />
-                </svg>
+
             </div>
             <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0">
-                <svg className="relative block w-full h-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250" preserveAspectRatio="none">
-                    <path fill="#eca390" fillOpacity="1" d="M0,150 C200,120 400,100 600,110 C800,120 1000,140 1200,130 C1300,125 1400,120 1440,115 L1440,250 L0,250 Z" />
-                </svg>
+
             </div>
 
             <div className="relative z-10 flex flex-col items-center justify-center text-center">
@@ -24,7 +20,7 @@ function LoadingComponent() {
                     <div className="animate-spin h-12 w-12 rounded-full border-4 border-[#eca390] border-t-transparent"></div>
                     <div className="absolute inset-1 animate-spin h-10 w-10 rounded-full border-4 border-white/30 border-b-transparent" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
                 </div>
-                <h6 className="mt-6 text-white/70 text-sm">🧟‍♂️ Aguarde enquanto ressuscitamos seus dados...</h6>
+                <h6 className="mt-6 text-white/70 text-sm"> Aguarde enquanto ressuscitamos seus dados...</h6>
             </div>
         </div>
     )
@@ -35,14 +31,10 @@ function NotFoundComponent({ router }) {
     return (
         <div className="min-h-screen bg-[#20053c] relative overflow-hidden flex items-center justify-center">
             <div className="absolute top-0 right-0 w-full overflow-hidden leading-none z-0">
-                <svg className="relative block w-full h-32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200" preserveAspectRatio="none">
-                    <path fill="#eca390" fillOpacity="1" d="M1440,60 C1300,40 1200,30 1000,35 C800,40 600,50 400,45 C200,40 100,30 0,25 L0,0 L1440,0 Z" />
-                </svg>
+                
             </div>
             <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0">
-                <svg className="relative block w-full h-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250" preserveAspectRatio="none">
-                    <path fill="#eca390" fillOpacity="1" d="M0,150 C200,120 400,100 600,110 C800,120 1000,140 1200,130 C1300,125 1400,120 1440,115 L1440,250 L0,250 Z" />
-                </svg>
+                
             </div>
 
             <div className="relative z-10 text-center max-w-2xl px-8">
@@ -50,7 +42,7 @@ function NotFoundComponent({ router }) {
                 <p className="text-lg text-white/80 mb-8">
                     Parece que esse Zoombi se perdeu da horda
                     <br />
-                    ...ou não é um Zoombi? 🧟‍♂️
+                    ...ou não é um Zoombi?
                 </p>
                 <button
                     onClick={() => router.push("/login")}
@@ -96,7 +88,7 @@ export default function ProfileForm() {
                 setFirstName(profileResponse.data.first_name || "")
                 setLastName(profileResponse.data.last_name || "")
 
-                // Buscar estatísticas do usuário (substitua pelos endpoints corretos da sua API)
+                // Buscar estatísticas do usuário
                 try {
                     const statsResponse = await axios.get("http://127.0.0.1:8000/api/usuarios/stats/", {
                         withCredentials: true,
@@ -110,13 +102,13 @@ export default function ProfileForm() {
                         totalHours: stats.total_hours || 0,
                         completedHours: stats.completed_hours || 0,
                         frequency: stats.days_active || 0,
-                        totalFrequency: stats.total_days || 30, // Exemplo: últimos 30 dias
+                        totalFrequency: stats.total_days || 30, 
                         overallScore: calculateOverallScore(stats)
                     }
 
                     setUserStats(calculatedStats)
                 } catch (statsError) {
-                    // Se não conseguir buscar stats, usar valores padrão
+                
                     console.warn("Não foi possível carregar estatísticas:", statsError)
                     setUserStats({
                         totalTasks: 10,
@@ -156,7 +148,7 @@ export default function ProfileForm() {
         const formData = new FormData();
         formData.append("first_name", firstName);
         formData.append("last_name", lastName);
-        if (avatar instanceof File) formData.append("avatar", avatar);
+        if (avatar) formData.append("avatar", avatar);
 
         try {
             await axios.put(
@@ -168,20 +160,19 @@ export default function ProfileForm() {
                 }
             );
 
-            // Atualiza os dados no estado
-            const updatedProfile = await axios.get(
-                "http://127.0.0.1:8000/api/usuarios/profile/",
-                { withCredentials: true }
-            );
-
+            // Recarrega o perfil para atualizar avatar e outros campos
+            const updatedProfile = await axios.get("http://127.0.0.1:8000/api/usuarios/profile/", {
+                withCredentials: true,
+            });
             setProfile(updatedProfile.data);
             setIsEditing(false);
-            alert("Perfil atualizado com sucesso!");
-        } catch (err) {
-            console.error("Erro ao atualizar perfil:", err);
-            alert("Não foi possível atualizar. Tente novamente!");
+            setAvatar(null); // limpa input
+            alert("Perfil atualizado com sucesso! ");
+        } catch {
+            alert("Erro ao atualizar perfil. Tente novamente!");
         }
     };
+
 
     // Funções auxiliares para calcular porcentagens
     const getTaskProgress = () => (userStats.totalTasks > 0 ? Math.round((userStats.completedTasks / userStats.totalTasks) * 100) : 0);
@@ -192,27 +183,27 @@ export default function ProfileForm() {
     const getMotivationalMessage = (type, percentage) => {
         if (percentage >= 90) {
             switch (type) {
-                case 'task': return "Excelente! Você está arrasando nos trabalhos! 🔥"
-                case 'hour': return "Incrível! Suas horas de estudo estão perfeitas! ⚡"
-                case 'frequency': return "Fantástico! Você é super frequente! 🌟"
+                case 'task': return "Excelente! Você está arrasando nos trabalhos! "
+                case 'hour': return "Incrível! Suas horas de estudo estão perfeitas! "
+                case 'frequency': return "Fantástico! Você é super frequente! "
                 default: return "Perfeito!"
             }
         } else if (percentage >= 70) {
             switch (type) {
-                case 'task': return "Muito bom! Continue assim nos trabalhos! 💪"
-                case 'hour': return "Ótimo progresso nas horas de estudo! 📚"
-                case 'frequency': return "Boa frequência! Mantenha o ritmo! 🎯"
+                case 'task': return "Muito bom! Continue assim nos trabalhos! "
+                case 'hour': return "Ótimo progresso nas horas de estudo! "
+                case 'frequency': return "Boa frequência! Mantenha o ritmo! "
                 default: return "Muito bom!"
             }
         } else if (percentage >= 50) {
             switch (type) {
-                case 'task': return "No caminho certo! Foque nos trabalhos pendentes! 📝"
-                case 'hour': return "Você pode melhorar suas horas de estudo! ⏰"
-                case 'frequency': return "Tente ser mais frequente! 📅"
+                case 'task': return "No caminho certo! Foque nos trabalhos pendentes! "
+                case 'hour': return "Você pode melhorar suas horas de estudo! "
+                case 'frequency': return "Tente ser mais frequente! "
                 default: return "Continue se esforçando!"
             }
         } else {
-            return "Hora de acordar esse Zoombi! Vamos lá! 🧟‍♂️"
+            return "Hora de acordar esse Zoombi! Vamos lá! "
         }
     }
 
@@ -220,21 +211,16 @@ export default function ProfileForm() {
     if (error || !profile) return <NotFoundComponent router={router} />
 
     const fullName = firstName && lastName ? `${firstName} ${lastName}` : (profile.username || "Zoombi Anônimo")
-    const userEmail = profile.email || "zoombi@exemplo.com"
 
     return (
         <div className="min-h-screen bg-[#20053c] relative overflow-hidden">
             {/* Elementos decorativos */}
             <div className="absolute top-0 right-0 w-full overflow-hidden leading-none z-0">
-                <svg className="relative block w-full h-32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200" preserveAspectRatio="none">
-                    <path fill="#eca390" fillOpacity="1" d="M1440,60 C1300,40 1200,30 1000,35 C800,40 600,50 400,45 C200,40 100,30 0,25 L0,0 L1440,0 Z" />
-                </svg>
+                
             </div>
 
             <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0">
-                <svg className="relative block w-full h-40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250" preserveAspectRatio="none">
-                    <path fill="#eca390" fillOpacity="1" d="M0,150 C200,120 400,100 600,110 C800,120 1000,140 1200,130 C1300,125 1400,120 1440,115 L1440,250 L0,250 Z" />
-                </svg>
+                
             </div>
 
             {/* Header */}
@@ -247,7 +233,7 @@ export default function ProfileForm() {
                         <span className="text-2xl font-bold text-white">ZOOMBI</span>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <span className="text-white/80">Olá, {firstName || "Zoombi"}! 👋</span>
+                        <span className="text-white/80">Olá, {firstName || "Zoombi"}! </span>
                         <button
                             onClick={() => router.push("/dashboard")}
                             className="px-4 py-2 bg-[#eca390] hover:bg-[#d78c86] text-[#20053c] rounded-xl font-medium transition-all duration-200"
@@ -271,7 +257,7 @@ export default function ProfileForm() {
                                     <div className="relative mb-6">
                                         {profile.avatar ? (
                                             <img
-                                                src={`http://127.0.0.1:8000${profile.avatar}`}
+                                                src={`http://127.0.0.1:8000/media/${profile.avatar}`}  // isso aqui não ta funcionando preciso arrumar
                                                 alt="Avatar"
                                                 className="w-32 h-32 rounded-full border-4 border-[#eca390] shadow-2xl object-cover"
                                             />
@@ -290,7 +276,7 @@ export default function ProfileForm() {
                                         <span className="text-white/60">#{profile.user_id}</span>
                                     </div>
                                     <p className="text-white/80 text-lg">
-                                        Membro da Horda Zoombi desde {new Date().getFullYear()} 🧠
+                                        Membro da Horda Zoombi desde {new Date().getFullYear()}
                                     </p>
                                 </div>
                             </div>
@@ -323,15 +309,15 @@ export default function ProfileForm() {
                                         onClick={() => setIsEditing(!isEditing)}
                                         className="w-full py-4 bg-[#eca390] hover:bg-[#d78c86] text-[#20053c] font-semibold rounded-2xl transition-all duration-200 text-lg"
                                     >
-                                        {isEditing ? "🚫 Cancelar Edição" : "✏️ Editar Perfil"}
+                                        {isEditing ? " Cancelar Edição" : " Editar Perfil"}
                                     </button>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Card de progresso detalhado */}
+                        {/* Card de progresso */}
                         <div className="bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20 p-8">
-                            <h2 className="text-3xl font-bold text-white mb-8">📊 Progresso Zoombi</h2>
+                            <h2 className="text-3xl font-bold text-white mb-8"> Progresso Zoombi</h2>
                             <div className="bg-gradient-to-r from-[#20053c] to-[#2d0749] rounded-2xl p-6 border border-[#eca390]/20">
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
@@ -401,7 +387,7 @@ export default function ProfileForm() {
                         {/* Círculo de progresso geral */}
                         <div className="bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20 p-6">
                             <div className="text-center">
-                                <h3 className="text-xl font-bold text-white mb-6">🎯 Progresso Geral</h3>
+                                <h3 className="text-xl font-bold text-white mb-6"> Progresso Geral</h3>
                                 <div className="relative w-40 h-40 mx-auto mb-6">
                                     <svg className="w-40 h-40 transform -rotate-90" viewBox="0 0 100 100">
                                         <circle
@@ -433,9 +419,9 @@ export default function ProfileForm() {
                                     </div>
                                 </div>
                                 <p className="text-white/80 text-sm">
-                                    {userStats.overallScore >= 80 ? "🔥 Zoombi Exemplar!" :
-                                        userStats.overallScore >= 60 ? "💪 Zoombi Dedicado!" :
-                                            userStats.overallScore >= 40 ? "📈 Zoombi em Evolução!" :
+                                    {userStats.overallScore >= 80 ? " Zoombi Exemplar!" :
+                                        userStats.overallScore >= 60 ? " Zoombi Dedicado!" :
+                                            userStats.overallScore >= 40 ? " Zoombi em Evolução!" :
                                                 "🧟‍♂️ Hora de Acordar!"}
                                 </p>
                             </div>
@@ -444,7 +430,7 @@ export default function ProfileForm() {
                         {/* Formulário de edição */}
                         {isEditing && (
                             <div className="bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20 p-6">
-                                <h3 className="text-2xl font-bold text-white mb-6">✏️ Editar Perfil</h3>
+                                <h3 className="text-2xl font-bold text-white mb-6"> Editar Perfil</h3>
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     <div>
                                         <label className="block text-white font-medium mb-2">Nome</label>
@@ -507,23 +493,23 @@ export default function ProfileForm() {
                             <h3 className="text-xl font-bold text-white mb-4"> Dicas do Zoombi</h3>
                             <div className="space-y-3 text-sm text-white/80">
                                 <div className="flex items-start space-x-2">
-                                    <div className="text-[#eca390]">⚡</div>
+                                    <div className="text-[#eca390]"></div>
                                     <div>Revise suas anotações diariamente — 15 minutos já ajudam muito.</div>
                                 </div>
                                 <div className="flex items-start space-x-2">
-                                    <div className="text-[#eca390]">📌</div>
+                                    <div className="text-[#eca390]"></div>
                                     <div>Quebre tarefas grandes em pequenas metas: avance 25 minutos, pause 5.</div>
                                 </div>
                                 <div className="flex items-start space-x-2">
-                                    <div className="text-[#eca390]">🎧</div>
+                                    <div className="text-[#eca390]"></div>
                                     <div>Testa músicas instrumentais ou ruído branco para foco.</div>
                                 </div>
                             </div>
                         </div>
-                    </div> {/* fim coluna direita */}
+                    </div> 
 
-                </div> {/* fim grid */}
-            </div> {/* fim conteúdo principal */}
-        </div> /* fim root */
+                </div> 
+            </div> 
+        </div>
     )
 }

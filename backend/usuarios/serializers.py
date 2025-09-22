@@ -38,6 +38,7 @@ class LoginUserSerializer(Serializer):
 class ProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source="user.first_name", required=False)
     last_name = serializers.CharField(source="user.last_name", required=False)
+    avatar = serializers.ImageField(required=False)
     username = serializers.CharField(source="user.username", read_only=True)
     email = serializers.EmailField(source="user.email", read_only=True)
     user_id = serializers.IntegerField(source="user.id", read_only=True)
@@ -48,10 +49,16 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ["first_name", "last_name", "avatar", "username", "email", "user_id", "date_joined"]
 
     def update(self, instance, validated_data):
+      
         user_data = validated_data.pop("user", {})
-        if "first_name" in user_data:
-            instance.user.first_name = user_data["first_name"]
-        if "last_name" in user_data:
-            instance.user.last_name = user_data["last_name"]
+        for attr, value in user_data.items():
+            setattr(instance.user, attr, value)
         instance.user.save()
-        return super().update(instance, validated_data)
+
+     
+        avatar = validated_data.get("avatar", None)
+        if avatar:
+            instance.avatar = avatar
+
+        instance.save()
+        return instance
