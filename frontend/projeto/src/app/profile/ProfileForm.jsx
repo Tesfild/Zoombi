@@ -56,7 +56,7 @@ export default function ProfileForm() {
                 <p className="mt-2 text-gray-600">Faça login novamente ou crie um perfil.</p>
                 <button
                     onClick={() => router.push("/login")}
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    className="mt-4 px-4 py-2 bg-[#20053c] text-white rounded-lg hover:bg-blue-700"
                 >
                     Voltar
                 </button>
