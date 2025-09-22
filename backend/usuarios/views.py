@@ -2,13 +2,14 @@ from django.shortcuts import render
 from rest_framework.generics import RetrieveUpdateAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from .serializers import CustomUserSerializer, RegisterUserSerializer, LoginUserSerializer
+from .serializers import CustomUserSerializer, RegisterUserSerializer, LoginUserSerializer, ProfileSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics, permissions
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework.permissions import AllowAny
+from .models import Profile
 
 # Criando o módulo para apenas usuários autenticados entrarem
 class UserInfoView(RetrieveUpdateAPIView):
@@ -87,3 +88,14 @@ class CookieTokenRefreshView(TokenRefreshView):
             return response
         except InvalidToken:
             return Response({'error':'Invalid token.'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+
+class ProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        user = self.request.user
+        # cria o profile caso não exista
+        profile, created = Profile.objects.get_or_create(user=user)
+        return profile
