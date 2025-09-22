@@ -38,10 +38,14 @@ class LoginUserSerializer(Serializer):
 class ProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source="user.first_name", required=False)
     last_name = serializers.CharField(source="user.last_name", required=False)
+    username = serializers.CharField(source="user.username", read_only=True)
+    email = serializers.EmailField(source="user.email", read_only=True)
+    user_id = serializers.IntegerField(source="user.id", read_only=True)
+    date_joined = serializers.DateTimeField(source="user.date_joined", read_only=True)
 
     class Meta:
         model = Profile
-        fields = ["first_name", "last_name", "avatar"]
+        fields = ["first_name", "last_name", "avatar", "username", "email", "user_id", "date_joined"]
 
     def update(self, instance, validated_data):
         user_data = validated_data.pop("user", {})
